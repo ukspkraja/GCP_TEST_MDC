@@ -34,7 +34,7 @@ jobs:
         CLIENT_SECRET: "NkG8Q~.FzKAZCNttyqvHxAwaeero5ciRepXKDa6Z"
         RESOURCE_GROUP: "kpmg-testing"
       run: |
-        ./TfConnectorfiles/connector.ps1 `
+        ./onboard_gcp_folder_test.ps1 `
           -SubscriptionId $env:SUBSCRIPTION_ID `
           -TenantId $env:TENANT_ID `
           -GCPFolderId $env:GCP_FOLDER_ID `
@@ -49,4 +49,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: ConnectorJson
-        path: TfConnectorfiles/final-body.json
+        path: onboard_gcp_folder_test.ps
