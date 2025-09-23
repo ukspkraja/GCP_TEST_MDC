@@ -1,4 +1,4 @@
-- name: Run CreateGCPFolderConnector Script
+ name: Run CreateGCPFolderConnector Script
   env:
     SUBSCRIPTION_ID: "f2e26c0b-8b27-4edd-b6f4-73edc39a4186"
     TENANT_ID: "1172494f-68e2-4743-8ebb-b6916a1c681e"
