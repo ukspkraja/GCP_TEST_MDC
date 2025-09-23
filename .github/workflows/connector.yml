@@ -14,7 +14,7 @@ jobs:
     - name: Authenticate to Azure
       env:
         AZURE_CLIENT_ID: "d47fb118-5c46-4069-801d-a7c945665e0f"
-        AZURE_CLIENT_SECRET: 
+        AZURE_CLIENT_SECRET: "NkG8Q~.FzKAZCNttyqvHxAwaeero5ciRepXKDa6Z"
         AZURE_TENANT_ID: "1172494f-68e2-4743-8ebb-b6916a1c681e"
       run: |
         az login --service-principal `
@@ -31,10 +31,10 @@ jobs:
         GCP_FOLDER_ID: "93604753456"
         GCP_ORGANIZATION_ID: "1044632980853"
         CLIENT_ID: "d47fb118-5c46-4069-801d-a7c945665e0f"
-        CLIENT_SECRET: 
+        CLIENT_SECRET: "NkG8Q~.FzKAZCNttyqvHxAwaeero5ciRepXKDa6Z"
         RESOURCE_GROUP: "kpmg-testing"
       run: |
-        ./TfConnectorfiles/connector.ps1 `
+        ./onboard_gcp_folder_test.ps`
           -SubscriptionId $env:SUBSCRIPTION_ID `
           -TenantId $env:TENANT_ID `
           -GCPFolderId $env:GCP_FOLDER_ID `
@@ -49,4 +49,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: ConnectorJson
-        path: TfConnectorfiles/final-body.json
+        path: onboard_gcp_folder_test.ps
