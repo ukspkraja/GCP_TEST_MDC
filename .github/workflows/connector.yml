@@ -1,4 +1,4 @@
-name: Onboard GCP Projects to Defender for Cloud
+name: Onboard GCP Projects 
 
 on:
   workflow_dispatch:  # Manual trigger from GitHub UI
