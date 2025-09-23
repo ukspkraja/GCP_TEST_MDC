@@ -34,7 +34,7 @@ jobs:
         CLIENT_SECRET: "NkG8Q~.FzKAZCNttyqvHxAwaeero5ciRepXKDa6Z"
         RESOURCE_GROUP: "kpmg-testing"
       run: |
-        ./onboard_gcp_folder_test.ps`
+        ./onboard_gcp_folder_test.ps1`
           -SubscriptionId $env:SUBSCRIPTION_ID `
           -TenantId $env:TENANT_ID `
           -GCPFolderId $env:GCP_FOLDER_ID `
