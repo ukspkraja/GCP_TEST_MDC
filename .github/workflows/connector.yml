@@ -1,4 +1,4 @@
-name: Onboard GCP Projects 
+name: GCP Folder level 
 
 on:
   workflow_dispatch:  # Manual trigger from GitHub UI
