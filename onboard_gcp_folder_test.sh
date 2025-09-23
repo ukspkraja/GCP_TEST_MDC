@@ -4,10 +4,10 @@
 # Onboard a GCP folder into Microsoft Defender for Cloud (folder-level onboarding)
 # Requires: az CLI
 
-# set -euo pipefail
+set -euo pipefail
 
 # ====== CONFIG ======
-FOLDER_ID = "93604753456"              # e.g. 123456789012
+FOLDER_ID="93604753456"              # e.g. 123456789012
 WORKLOAD_IDENTITY_POOL_ID="1172494f68e247438ebbb6916a1c681e"
 AZ_SUBSCRIPTION="f2e26c0b-8b27-4edd-b6f4-73edc39a4186"
 AZ_RG="kpmg-testing"
