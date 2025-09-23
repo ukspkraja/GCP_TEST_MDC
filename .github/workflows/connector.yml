@@ -49,4 +49,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: ConnectorJson
-        path: onboard_gcp_folder_test.ps
+        path: final-body.json
