@@ -1,0 +1,76 @@
+#!/usr/bin/env bash
+# filepath: onboard_gcp_folder_to_mdc.sh
+
+# Onboard a GCP folder into Microsoft Defender for Cloud (folder-level onboarding)
+# Requires: az CLI
+
+set -euo pipefail
+
+# ====== CONFIG ======
+FOLDER_ID="<YOUR_FOLDER_ID>"              # e.g. 123456789012
+WORKLOAD_IDENTITY_POOL_ID="<YOUR_WORKLOAD_IDENTITY_POOL_ID>"
+AZ_SUBSCRIPTION="<AZURE_SUBSCRIPTION_ID>"
+AZ_RG="<AZURE_RESOURCE_GROUP>"
+AZ_LOCATION="eastus"
+
+# Service Accounts (replace with actual folder-level service accounts if needed)
+CSPM_SA="microsoft-defender-cspm@$FOLDER_ID.iam.gserviceaccount.com"
+DEFENDER_SA="microsoft-defender-for-servers@$FOLDER_ID.iam.gserviceaccount.com"
+
+CONNECTOR_NAME="gcp-folder-$FOLDER_ID"
+
+# Get Azure auth token
+AZ_TOKEN=$(az account get-access-token --resource https://management.azure.com --query accessToken -o tsv)
+
+# JSON body for folder-level connector
+BODY=$(cat <<EOF
+{
+  "location": "$AZ_LOCATION",
+  "properties": {
+    "hierarchyIdentifier": "$FOLDER_ID",
+    "environmentName": "GCP",
+    "environmentData": {
+      "environmentType": "GcpFolder",
+      "folderId": "$FOLDER_ID",
+      "folderNumber": "$FOLDER_ID",
+      "workloadIdentityPoolId": "$WORKLOAD_IDENTITY_POOL_ID"
+    },
+    "offerings": [
+      {
+        "offeringType": "CspmMonitorGcp",
+        "nativeCloudConnection": {
+          "serviceAccountEmailAddress": "$CSPM_SA",
+          "workloadIdentityProviderId": "cspm"
+        }
+      },
+      {
+        "offeringType": "DefenderForServersGcp",
+        "defenderForServers": {
+          "serviceAccountEmailAddress": "$DEFENDER_SA",
+          "workloadIdentityProviderId": "defender-for-servers"
+        },
+        "mdeAutoProvisioning": {
+          "enabled": true,
+          "configuration": {}
+        },
+        "arcAutoProvisioning": {
+          "enabled": true,
+          "configuration": {}
+        },
+        "subPlan": "P2"
+      }
+    ]
+  }
+}
+EOF
+)
+
+# Call Azure REST API
+echo "Creating folder-level connector $CONNECTOR_NAME in Azure ..."
+curl -s -X PUT \
+  -H "Authorization: Bearer $AZ_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d "$BODY" \
+  "https://management.azure.com/subscriptions/$AZ_SUBSCRIPTION/resourceGroups/$AZ_RG/providers/Microsoft.Security/securityConnectors/$CONNECTOR_NAME?api-version=2023-10-01-preview"
+
+echo "✅ Folder-level connector created for folder $FOLDER_ID"
