@@ -1,0 +1,52 @@
+name: Run GCPFolderConnector Script
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-script:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v3
+
+    - name: Authenticate to Azure
+      env:
+        AZURE_CLIENT_ID: "d47fb118-5c46-4069-801d-a7c945665e0f"
+        AZURE_CLIENT_SECRET: 
+        AZURE_TENANT_ID: "1172494f-68e2-4743-8ebb-b6916a1c681e"
+      run: |
+        az login --service-principal `
+          --username $env:AZURE_CLIENT_ID `
+          --password $env:AZURE_CLIENT_SECRET `
+          --tenant $env:AZURE_TENANT_ID
+        Write-Host "Azure authentication successful."
+      shell: pwsh
+
+    - name: Run CreateGCPFolderConnector Script
+      env:
+        SUBSCRIPTION_ID: "f2e26c0b-8b27-4edd-b6f4-73edc39a4186"
+        TENANT_ID: "1172494f-68e2-4743-8ebb-b6916a1c681e"
+        GCP_FOLDER_ID: "93604753456"
+        GCP_ORGANIZATION_ID: "1044632980853"
+        CLIENT_ID: "d47fb118-5c46-4069-801d-a7c945665e0f"
+        CLIENT_SECRET: 
+        RESOURCE_GROUP: "kpmg-testing"
+      run: |
+        ./TfConnectorfiles/connector.ps1 `
+          -SubscriptionId $env:SUBSCRIPTION_ID `
+          -TenantId $env:TENANT_ID `
+          -GCPFolderId $env:GCP_FOLDER_ID `
+          -ClientId $env:CLIENT_ID `
+          -ClientSecret $env:CLIENT_SECRET `
+          -ResourceGroup $env:RESOURCE_GROUP `
+          -ManagementProjectId "sbx-sentinel-mde-dev-920788" `
+          -ManagementProjectNumber "1031194949050"
+      shell: pwsh
+
+    - name: Upload final-body.json as Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ConnectorJson
+        path: TfConnectorfiles/final-body.json
