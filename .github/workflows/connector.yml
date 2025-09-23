@@ -51,7 +51,7 @@ jobs:
             echo "✅ Azure authentication successful."
 
     - name: Make script executable
-      run: chmod +x gcp-bash.sh
+      run: chmod +x onboard_gcp_folder_test.sh
 
     - name: Run onboarding script
       run: ./onboard_gcp_folder_test.sh
