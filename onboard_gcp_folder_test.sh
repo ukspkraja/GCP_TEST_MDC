@@ -28,6 +28,8 @@ BODY=$(cat <<EOF
   "location": "$AZ_LOCATION",
   "properties": {
     "hierarchyIdentifier": "$FOLDER_ID",
+    "etag": "",
+    "tags": {},
     "environmentName": "GCP",
     "environmentData": {
       "environmentType": "GcpFolder",
@@ -64,6 +66,10 @@ BODY=$(cat <<EOF
 }
 EOF
 )
+
+# Print the JSON body for debugging
+echo "Request body:"
+echo "$BODY"
 
 # Call Azure REST API
 echo "Creating folder-level connector $CONNECTOR_NAME in Azure ..."
