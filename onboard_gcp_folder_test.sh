@@ -32,7 +32,7 @@ BODY=$(cat <<EOF
     "environmentData": {
       "environmentType": "GcpFolder",
       "folderId": "$FOLDER_ID",
-      "folderNumber": "$FOLDER_ID",
+      "folderNumber": $FOLDER_ID,
       "workloadIdentityPoolId": "$WORKLOAD_IDENTITY_POOL_ID"
     },
     "offerings": [
